@@ -28,11 +28,14 @@ public class PharmaciesTask extends AsyncTask<Void, Void, List<PharmacyDto>>{
     }
 
     @Override
-    protected void onPostExecute(List<PharmacyDto> pharmacies) {
-        mainActivity.populateListView(pharmacies);
+    protected void onPostExecute(final List<PharmacyDto> pharmacies) {
+        mainActivity.runOnUiThread(new Runnable() {
+            public void run() {
+                mainActivity.populateListView(pharmacies);
+            }
+        });
     }
 
-    @NonNull
     private List<PharmacyDto> getPharmacies() {
 
         try {
@@ -41,9 +44,15 @@ public class PharmaciesTask extends AsyncTask<Void, Void, List<PharmacyDto>>{
             Log.d("PHARMACIES", pharmacies.toString());
             return pharmacies;
         } catch (Exception exception) {
-            Toast toast = Toast.makeText(mainActivity.getApplicationContext(),
-                    "Cannot fetch pharmacies", Toast.LENGTH_SHORT);
-            toast.show();
+
+            mainActivity.runOnUiThread(new Runnable() {
+                public void run() {
+                    Toast toast = Toast.makeText(mainActivity.getApplicationContext(),
+                            "Cannot fetch pharmacies", Toast.LENGTH_SHORT);
+                    toast.show();
+                }
+            });
+
             return null;
         }
     }

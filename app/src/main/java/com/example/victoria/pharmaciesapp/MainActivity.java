@@ -37,4 +37,5 @@ public class MainActivity extends AppCompatActivity {
         //set custom pharmaciesAdapter as pharmaciesAdapter to our list view
         itemsListView.setAdapter(pharmaciesAdapter);
     }
+
 }

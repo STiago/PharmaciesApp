@@ -23,18 +23,29 @@ public class PharmacyDetailsTask extends AsyncTask<Integer, Void, PharmacyDetail
     }
 
     @Override
-    protected void onPostExecute(PharmacyDetailsDto pharmacyDetails) {
-        pharmacyDrugsActivity.populateListView(pharmacyDetails);
+    protected void onPostExecute(final PharmacyDetailsDto pharmacyDetails) {
+
+        pharmacyDrugsActivity.runOnUiThread(new Runnable() {
+            public void run() {
+                pharmacyDrugsActivity.populateListView(pharmacyDetails);
+            }
+        });
     }
 
     private PharmacyDetailsDto getPharmacyDetails(int pharmacyId)  {
         try {
             PharmaciesBackend pharmaciesBackend = PharmaciesBackend.getInstance();
             return  pharmaciesBackend.getPharmacyDetails(pharmacyId).execute().body();
-        } catch (IOException e) {
-            Toast toast = Toast.makeText(pharmacyDrugsActivity.getApplicationContext(),
-                    "Cannot fetch pharmacy details", Toast.LENGTH_SHORT);
-            toast.show();
+        } catch (Exception e) {
+
+            pharmacyDrugsActivity.runOnUiThread(new Runnable() {
+                public void run() {
+                    Toast toast = Toast.makeText(pharmacyDrugsActivity.getApplicationContext(),
+                            "Cannot fetch pharmacy details", Toast.LENGTH_SHORT);
+                    toast.show();
+                }
+            });
+
             return null;
         }
     }
