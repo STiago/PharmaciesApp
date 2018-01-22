@@ -6,7 +6,6 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-import retrofit2.http.Path;
 
 public class PharmaciesBackend {
 
@@ -32,8 +31,13 @@ public class PharmaciesBackend {
         return pharmaciesBackend;
     }
 
+
     public Call<List<PharmacyDto>> getPharmacies(){
         return pharmaciesService.getPharmacies();
+    }
+
+    public Call<List<PharmacyDto>> getPharmaciesWithDrug(String drugName){
+        return pharmaciesService.getPharmacies(drugName);
     }
 
 
